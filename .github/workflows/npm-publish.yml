@@ -18,11 +18,10 @@
         required: true
 
 jobs:
-  publish:
+  prepare:
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ steps.environment.outputs.environment }}
-      url: https://www.npmjs.com/package/${{ steps.package-name.outputs.package-name }}/v/${{ steps.package-version.outputs.package-version }}
+    outputs:
+      packageVersionUrl: ${{ steps.package-version-url.outputs.packageVersionUrl }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -35,15 +34,33 @@ jobs:
       - name: Update version for non latest tagged versions
         if: inputs.dist_tag != 'latest'
         run: npm version "$(npm pkg get version | sed 's/\"//g')"-"$(date +%s)".${{ github.sha }} --allow-same-version --git-tag-version=false --tag-version-prefix=''
-      - name: Get package name
-        id: package-name
-        run: echo "package-name=$(npm pkg get name)" >> $GITHUB_OUTPUT
-      - name: Get package version
-        id: package-version
-        run: echo "package-version=$(npm pkg get version)" >> $GITHUB_OUTPUT
-      - name: Get environment
-        id: environment
-        run: echo "environment=$(case "${{ inputs.dist_tag }}" in "latest") echo "production";; "next") echo "next";; *) echo "feature";; esac)" >> $GITHUB_OUTPUT
+      - name: Get version url
+        id: package-version-url
+        run: echo "packageVersionUrl=https://www.npmjs.com/package/$(npm pkg get name | tr -d '"')/v/$(npm pkg get version | tr -d '"')" >> "$GITHUB_OUTPUT"
+      - name: Publish to ${{ inputs.dist_tag }} tag
+        run: npm publish --tag ${{ inputs.dist_tag }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  publish-feature:
+    if: inputs.dist_tag != 'latest' && inputs.dist_tag != 'next'
+    needs: prepare
+    runs-on: ubuntu-latest
+    environment:
+      name: feature
+      url: ${{ needs.prepare.outputs.packageVersionUrl }}
+    steps:
+      - name: Publish to ${{ inputs.dist_tag }} tag
+        run: npm publish --tag ${{ inputs.dist_tag }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  publish:
+    if: inputs.dist_tag == 'latest' || inputs.dist_tag == 'next'
+    needs: prepare
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.dist_tag }}
+      url: ${{ needs.prepare.outputs.packageVersionUrl }}
+    steps:
       - name: Publish to ${{ inputs.dist_tag }} tag
         run: npm publish --tag ${{ inputs.dist_tag }}
         env:
