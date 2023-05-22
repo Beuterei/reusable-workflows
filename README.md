@@ -28,12 +28,12 @@ Reusable workflows for all my github stuff. See [reusing-workflows](https://docs
 
 ## Disclaimer
 
-Most workflows are fitted to my taste of development. This project is still open source since i believe in oversharing is better.
+Most workflows are fitted to my taste of development. This project is still open source since i believe oversharing is better.
 So if you are going to use this be aware that those workflows are meant for my own repositories and will grow and adapt with the needs of them.
 
 ## Workflows
 
-### [NPM Publish](.github/workflows/publish-npm.yml)
+### [NPM Publish](.github/workflows/npm-publish.yml)
 
 Publish a NPM package to the NPM registry.
 
@@ -50,7 +50,15 @@ Publish a NPM package to the NPM registry.
 | ----------- | ------------------------------------------- | -------- |
 | `NPM_TOKEN` | NPM token with right access for publishing. | `false`  |
 
-### [NPM dist-tag remove](.github/workflows/remove-dist-tag-npm.yml)
+#### Environment deployment
+
+| Name         | Case                                 |
+| ------------ | ------------------------------------ |
+| `production` | When the dist tag is `latest`.       |
+| `next`       | When the dist tag is `next`.         |
+| `feature`    | When the dist tag is something else. |
+
+### [NPM dist-tag remove](.github/workflows/npm-remove-dist-tag.yml)
 
 Remove a dist-tag from the NPM registry.
 
