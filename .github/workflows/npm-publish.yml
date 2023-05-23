@@ -24,17 +24,13 @@ jobs:
     with:
       dist_tag: ${{ inputs.dist_tag }}
       node_version: ${{ inputs.node_version }}
+      environment: feature
     secrets: inherit
-    environment:
-      name: feature
-      url: ${{ steps.package-version-url.outputs.packageVersionUrl }}
   publish:
     if: inputs.dist_tag == 'latest' || inputs.dist_tag == 'next'
     uses: ./.github/workflows/internal-npm-shared-publish.yml
     with:
       dist_tag: ${{ inputs.dist_tag }}
       node_version: ${{ inputs.node_version }}
+      environment: ${{ inputs.dist_tag }}
     secrets: inherit
-    environment:
-      name: ${{ inputs.dist_tag }}
-      url: ${{ steps.package-version-url.outputs.packageVersionUrl }}

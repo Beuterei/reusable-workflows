@@ -3,11 +3,12 @@
   workflow_call:
     inputs:
       dist_tag:
-        description: NPM dist tag to publish to
         required: true
         type: string
       node_version:
-        description: Node version to build on
+        required: true
+        type: string
+      environment:
         required: true
         type: string
     secrets:
@@ -18,6 +19,9 @@
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ steps.package-version-url.outputs.packageVersionUrl }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -37,4 +41,3 @@ jobs:
         run: npm publish --tag ${{ inputs.dist_tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
