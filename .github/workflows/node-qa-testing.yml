@@ -62,6 +62,6 @@ jobs:
       - name: Run tests
         if: inputs.test_command != ''
         run: ${{ inputs.test_command }}
-      - name: Run tests
+      - name: Report coverage
         if: inputs.report_coverage
         uses: MishaKav/jest-coverage-comment@v1.0.23
