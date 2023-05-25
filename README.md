@@ -48,19 +48,32 @@ Publish a NPM package to the NPM registry.
 
 | Name        | Description                                 | Required |
 | ----------- | ------------------------------------------- | -------- |
-| `NPM_TOKEN` | NPM token with right access for publishing. | `false`  |
+| `NPM_TOKEN` | NPM token with right access for publishing. | `true`   |
 
 #### Environment deployment
 
-| Name         | Case                                 |
-| ------------ | ------------------------------------ |
-| `production` | When the dist tag is `latest`.       |
-| `next`       | When the dist tag is `next`.         |
-| `feature`    | When the dist tag is something else. |
+It deploys to a environment with the same name as the `dist_tag`.
 
-### [NPM dist-tag remove](.github/workflows/npm-remove-dist-tag.yml)
+### [GitHub NPM Publish](.github/workflows/github-npm-publish.yml)
 
-Remove a dist-tag from the NPM registry.
+Publish a NPM package to the GitHub registry.
+
+#### Inputs
+
+| Name           | Description                 | Type     | Default | Required |
+| -------------- | --------------------------- | -------- | ------- | -------- |
+| `dist_tag`     | NPM dist tag to publish to. | `string` | ``      | `true`   |
+| `node_version` | Node version to build on.   | `string` | `18`    | `false`  |
+
+#### Secrets
+
+| Name           | Description                                    | Required |
+| -------------- | ---------------------------------------------- | -------- |
+| `GITHUB_TOKEN` | GitHub token with right access for publishing. | `true`   |
+
+### [NPM dist-tag remove](.github/workflows/github-npm-remove-dist-tag.yml)
+
+Remove a dist-tag from the GitHub registry.
 
 #### Inputs
 
@@ -70,9 +83,9 @@ Remove a dist-tag from the NPM registry.
 
 #### Secrets
 
-| Name        | Description                               | Required |
-| ----------- | ----------------------------------------- | -------- |
-| `NPM_TOKEN` | NPM token with right access for removing. | `false`  |
+| Name           | Description                                  | Required |
+| -------------- | -------------------------------------------- | -------- |
+| `GITHUB_TOKEN` | GitHub token with right access for removing. | `true`   |
 
 ### [Node Testing](.github/workflows/qa-node-testing.yml)
 

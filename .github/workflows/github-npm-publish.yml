@@ -4,8 +4,7 @@
     inputs:
       dist_tag:
         description: NPM dist tag to publish to
-        default: latest
-        required: false
+        required: true
         type: string
       node_version:
         description: Node version to build on
@@ -13,32 +12,25 @@
         required: false
         type: string
     secrets:
-      NPM_TOKEN:
-        description: NPM token with right access for publishing
+      GITHUB_TOKEN:
+        description: GitHub token with right access for publishing
         required: true
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ inputs.dist_tag }}
-      url: ${{ steps.package-version-url.outputs.packageVersionUrl }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          registry-url: https://registry.npmjs.org
+          registry-url: https://npm.pkg.github.com
           node-version: ${{ inputs.node_version }}
           cache: npm
       - name: Install node dependencies
         run: npm ci
-      - name: Update version for non latest tagged versions
-        if: inputs.dist_tag != 'latest'
+      - name: Update version to include commit hash
         run: npm version "$(npm pkg get version | sed 's/\"//g')"-"$(date +%s)".${{ github.sha }} --allow-same-version --git-tag-version=false --tag-version-prefix=''
-      - name: Get version url
-        id: package-version-url
-        run: echo "packageVersionUrl=https://www.npmjs.com/package/$(npm pkg get name | tr -d '"')/v/$(npm pkg get version | tr -d '"')" >> "$GITHUB_OUTPUT"
       - name: Publish to ${{ inputs.dist_tag }} tag with npm registry
         run: npm publish --tag ${{ inputs.dist_tag }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
