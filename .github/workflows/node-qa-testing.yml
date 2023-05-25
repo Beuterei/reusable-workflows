@@ -24,9 +24,14 @@
         type: string
       test_command:
         description: Test command to run. To disable set to ''
-        default: npm run test
+        default: npm run test:cov
         required: false
         type: string
+      report_coverage:
+        description: Report coverage to the pr
+        default: true
+        required: false
+        type: boolean
 
 jobs:
   testing:
@@ -57,3 +62,6 @@ jobs:
       - name: Run tests
         if: inputs.test_command != ''
         run: ${{ inputs.test_command }}
+      - name: Run tests
+        if: inputs.report_coverage
+        uses: MishaKav/jest-coverage-comment@v1.0.23
