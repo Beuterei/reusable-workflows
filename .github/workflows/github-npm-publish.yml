@@ -11,10 +11,6 @@
         default: "18"
         required: false
         type: string
-    secrets:
-      GITHUB_TOKEN:
-        description: GitHub token with right access for publishing
-        required: true
 
 jobs:
   publish:
