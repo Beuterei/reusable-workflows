@@ -35,6 +35,8 @@
 
 jobs:
   testing:
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     strategy:
       matrix:
