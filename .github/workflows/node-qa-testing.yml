@@ -68,7 +68,7 @@ jobs:
         if: inputs.test_command != '' && inputs.run_jest_coverage
         run: ${{ inputs.test_command }} --- --coverage | tee ./coverage.txt
       - name: Report coverage
-        if:  inputs.run_jest_coverage && strategy.job-index == env.LAST_JOB_INDEX
+        if:  inputs.run_jest_coverage && strategy.job-index == env.LAST_JOB_INDEX && github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2.3.1
         with:
           filePath: ./coverage.txt
