@@ -66,5 +66,5 @@ jobs:
         if: inputs.test_command != '' && inputs.run_jest_coverage
         run: ${{ inputs.test_command }} --- --coverage --coverageReporters json-summary
       - name: Report coverage
-        if:  inputs.run_jest_coverage
+        if:  inputs.run_jest_coverage && strategy.job-index == env.LAST_JOB_INDEX
         uses: MishaKav/jest-coverage-comment@v1.0.23
