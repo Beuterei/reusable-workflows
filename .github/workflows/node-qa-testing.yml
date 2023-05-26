@@ -65,11 +65,11 @@ jobs:
         run: ${{ inputs.test_command }}
       - name: Run tests with coverage
         if: inputs.test_command != '' && inputs.run_jest_coverage
-        run: ${{ inputs.test_command }} --- --coverage | tee ./coverage.txt
+        run: ${{ inputs.test_command }} --- --ci --json --coverage --testLocationInResults --outputFile=report.json
       - name: Report coverage
-        # Only run this on PRs
-        if:  github.event_name == 'pull_request' && inputs.run_jest_coverage && strategy.job-index == env.LAST_JOB_INDEX
-        uses: thollander/actions-comment-pull-request@v2.3.1
+        if: inputs.run_jest_coverage && strategy.job-index == env.LAST_JOB_INDEX
+        uses: ArtiomTr/jest-coverage-report-action@v2
         with:
-          filePath: ./coverage.txt
-          comment_tag: coverage
+          coverage-file: report.json
+          base-coverage-file: report.json
+          skip-step: all
