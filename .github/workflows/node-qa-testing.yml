@@ -23,12 +23,12 @@
         required: false
         type: string
       test_command:
-        description: Test command to run. To disable set to ''
+        description: Base test command to run. To disable set to ''
         default: npm run test:cov
         required: false
         type: string
-      report_coverage:
-        description: Report coverage to the pr
+      run_jest_coverage:
+        description: Run and report the covergae with jest
         default: true
         required: false
         type: boolean
@@ -60,8 +60,11 @@ jobs:
       - name: Run test build
         run: ${{ inputs.build_command }}
       - name: Run tests
-        if: inputs.test_command != ''
+        if: inputs.test_command != '' && !inputs.run_jest_coverage
         run: ${{ inputs.test_command }}
+      - name: Run tests with coverage
+        if: inputs.test_command != '' && inputs.run_jest_coverage
+        run: ${{ inputs.test_command }} --- --coverage --coverageReporters json-summary
       - name: Report coverage
-        if: inputs.report_coverage
+        if:  inputs.run_jest_coverage
         uses: MishaKav/jest-coverage-comment@v1.0.23
