@@ -35,8 +35,6 @@
 
 jobs:
   testing:
-    permissions:
-      pull-requests: write
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -66,7 +64,10 @@ jobs:
         run: ${{ inputs.test_command }}
       - name: Run tests with coverage
         if: inputs.test_command != '' && inputs.run_jest_coverage
-        run: ${{ inputs.test_command }} --- --coverage --coverageReporters json-summary
+        run: ${{ inputs.test_command }} --- --coverage | tee ./coverage.txt
       - name: Report coverage
         if:  inputs.run_jest_coverage && strategy.job-index == env.LAST_JOB_INDEX
-        uses: MishaKav/jest-coverage-comment@v1.0.23
+        uses: thollander/actions-comment-pull-request@v2.3.1
+        with:
+          filePath: ./coverage.txt
+          comment_tag: coverage
