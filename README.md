@@ -101,6 +101,12 @@ Testing for node app, libraries and components.
 | `build_command`  | Build command to run.                          | `string` | `npm run build`            | `false`  |
 | `test_command`   | Test command to run. To disable set to `''`.   | `string` | `npm run test`             | `false`  |
 
+#### Permissions
+
+| Name            | value   | Description                                                          |
+| --------------- | ------- | -------------------------------------------------------------------- |
+| `pull-requests` | `write` | Only needed if job is used in a job with the `pull_request` trigger. |
+
 ## Directory structure and file naming
 
 > Reusable workflows are YAML-formatted files, very similar to any other workflow file. As with other workflow files, you locate reusable workflows in the `.github/workflows` directory of a repository. Subdirectories of the `workflows` directory are not supported.
