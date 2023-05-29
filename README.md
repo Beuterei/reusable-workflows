@@ -87,25 +87,28 @@ Remove a dist-tag from the GitHub registry.
 | -------------- | -------------------------------------------- | -------- |
 | `GITHUB_TOKEN` | GitHub token with right access for removing. | `true`   |
 
-### [Node Testing](.github/workflows/qa-node-testing.yml)
+### [Node Testing](.github/workflows/node-qa-testing.yml)
 
 Testing for node app, libraries and components.
 
 #### Inputs
 
-| Name             | Description                                    | Type     | Default                    | Required |
-| ---------------- | ---------------------------------------------- | -------- | -------------------------- | -------- |
-| `node_versions`  | Node versions matrix to test on.               | `string` | `['16.x', '17.x', '18.x']` | `false`  |
-| `format_command` | Format command to run. To disable set to `''`. | `string` | `npm run format`           | `false`  |
-| `lint_command`   | Lint command to run. To disable set to `''`.   | `string` | `npm run lint`             | `false`  |
-| `build_command`  | Build command to run.                          | `string` | `npm run build`            | `false`  |
-| `test_command`   | Test command to run. To disable set to `''`.   | `string` | `npm run test`             | `false`  |
+| Name                   | Description                                                         | Type      | Default                    | Required |
+| ---------------------- | ------------------------------------------------------------------- | --------- | -------------------------- | -------- |
+| `node_versions`        | Node versions matrix to test on.                                    | `string`  | `['16.x', '17.x', '18.x']` | `false`  |
+| `format_command`       | Format command to run. To disable set to `''`.                      | `string`  | `npm run format`           | `false`  |
+| `lint_command`         | Lint command to run. To disable set to `''`.                        | `string`  | `npm run lint`             | `false`  |
+| `build_command`        | Build command to run.                                               | `string`  | `npm run build`            | `false`  |
+| `test_command`         | Test command to run. To disable set to `''`.                        | `string`  | `npm run test`             | `false`  |
+| `run_jest_coverage`    | Run and report the coverage with jest. Uses `test_command` as base. | `boolean` | `true`                     | `false`  |
+| `skip_coverage_report` | Skip coverage reporting for resources that can not accept comments. | `boolean` | `false`                    | `false`  |
 
 #### Permissions
 
 | Name            | value   | Description                                                          |
 | --------------- | ------- | -------------------------------------------------------------------- |
 | `pull-requests` | `write` | Only needed if job is used in a job with the `pull_request` trigger. |
+| `contents`      | `write` | Only needed if job is used in a job with the `push` trigger.         |
 
 ## Directory structure and file naming
 

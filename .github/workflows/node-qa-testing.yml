@@ -24,12 +24,17 @@
         type: string
       test_command:
         description: Base test command to run. To disable set to ''
-        default: npm run test:cov
+        default: npm run test
         required: false
         type: string
       run_jest_coverage:
-        description: Run and report the covergae with jest
+        description: Run and report the coverage with jest. Uses test_command as base.
         default: true
+        required: false
+        type: boolean
+      skip_coverage_report:
+        description: Skip coverage reporting for resources that can not accept comments
+        default: false
         required: false
         type: boolean
 
@@ -67,7 +72,7 @@ jobs:
         if: inputs.test_command != '' && inputs.run_jest_coverage
         run: ${{ inputs.test_command }} --- --ci --json --coverage --testLocationInResults --outputFile=report.json
       - name: Report coverage
-        if: inputs.run_jest_coverage && strategy.job-index == env.LAST_JOB_INDEX
+        if: !inputs.skip_coverage_report && inputs.test_command != '' && inputs.run_jest_coverage && strategy.job-index == env.LAST_JOB_INDEX
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           coverage-file: report.json
