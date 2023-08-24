@@ -9,7 +9,7 @@
         type: string
       format_command:
         description: Format command to run. Disabled by default
-        default: ''
+        default:
         required: false
         type: string
       lint_command:
