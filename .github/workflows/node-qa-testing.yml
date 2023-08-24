@@ -8,8 +8,8 @@
         required: false
         type: string
       format_command:
-        description: Format command to run. To disable set to ''
-        default: npm run format
+        description: Format command to run. Disabled by default
+        default:
         required: false
         type: string
       lint_command:
