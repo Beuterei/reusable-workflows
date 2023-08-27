@@ -1,0 +1,48 @@
+---
+    "on":
+      workflow_call:
+        inputs:
+          environment_name:
+            description: Name of environment
+            required: true
+            type: string
+        secrets:
+          SSH_HOST:
+            description: SSH server to log in via SSH
+            required: true
+          SSH_USERNAME:
+            description: SSH username to log in via SSH
+            required: true
+          SSH_KEY:
+            description: SSH secret key to log in via SSH
+            required: true
+          ENVIRONMENT:
+            description: Environment file string to be used during deployment
+            required: true
+
+    jobs:
+      deploy:
+        runs-on: ubuntu-latest
+        environment:
+          name: ${{ inputs.environment_name }}
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v3
+          - name: Run deployment script on host server
+            uses: appleboy/ssh-action@v1.0.0
+            env:
+              ENVIRONMENT_NAME: ${{ inputs.environment_name }}
+              REPO_NAME: ${{ github.repository }}
+              REPO_URL: https://github.com/${{ github.repository }}
+              REVISON: ${{ github.ref }}
+              ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+            with:
+              host: ${{ secrets.SSH_HOST }}
+              username: ${{ secrets.SSH_USERNAME }}
+              key:  ${{ secrets.SSH_KEY }}
+              envs: ENVIRONMENT_NAME,REPO_NAME,REPO_URL,REVISON,ENVIRONMENT
+              script_stop: true
+              script: |
+                curl -s https://raw.githubusercontent.com/Beuterei/reusable-workflows/main/deploy.bash > /tmp/deploy.bash
+                chmod +x /tmp/deploy.bash
+                bash /tmp/deploy.bash

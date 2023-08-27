@@ -87,6 +87,29 @@ Remove a dist-tag from the GitHub registry.
 | -------------- | -------------------------------------------- | -------- |
 | `GITHUB_TOKEN` | GitHub token with right access for removing. | `true`   |
 
+### [Deploy](.github/workflows/deploy.yml)
+
+Deploys a service to a specified environment.
+
+#### Inputs
+
+| Name               | Description          | Type     | Default | Required |
+| ------------------ | -------------------- | -------- | ------- | -------- |
+| `environment_name` | Name of environment. | `string` | none    | `true`   |
+
+#### Secrets
+
+| Name           | Description                                           | Required |
+| -------------- | ----------------------------------------------------- | -------- |
+| `SSH_HOST`     | SSH server to log in via SSH.                         | `true`   |
+| `SSH_USERNAME` | SSH username to log in via SSH.                       | `true`   |
+| `SSH_KEY`      | SSH secret key to log in via SSH.                     | `true`   |
+| `ENVIRONMENT`  | Environment file string to be used during deployment. | `true`   |
+
+#### Environment deployment
+
+It deploys to a environment with the same name as the `environment_name`.
+
 ### [Node Testing](.github/workflows/node-qa-testing.yml)
 
 Testing for node app, libraries and components.
