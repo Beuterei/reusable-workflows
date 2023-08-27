@@ -40,8 +40,8 @@ git reset --hard
 # fetch new branches and tags
 git fetch
 
-# Switch to target revison
-git switch --detach "$REVISON"
+# Checkout to target revison
+git checkout --detach "$REVISON"
 
 # Write enviroment string to file
 echo "$ENVIRONMENT" > .env.local
