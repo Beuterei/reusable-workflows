@@ -12,6 +12,13 @@
         default: "18"
         required: false
         type: string
+      package_manager:
+        default: npm
+        description: Package manager to use
+        options:
+          - npm
+          - bun
+        type: choice
     secrets:
       NPM_TOKEN:
         description: NPM token with right access for publishing
@@ -24,14 +31,10 @@ jobs:
       name: ${{ inputs.dist_tag }}
       url: ${{ steps.package-version-url.outputs.packageVersionUrl }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: ./.github/workflows/environment-setup
         with:
-          registry-url: https://registry.npmjs.org
-          node-version: ${{ inputs.node_version }}
-          cache: npm
-      - name: Install node dependencies
-        run: npm ci
+          package_manager: ${{ inputs.package_manager }}
+          node_version: ${{ inputs.node_version }}
       - name: Update version for non latest tagged versions
         if: inputs.dist_tag != 'latest'
         run: npm version "$(npm pkg get version | sed 's/\"//g')"-"$(date +%s)".${{ github.sha }} --allow-same-version --git-tag-version=false --tag-version-prefix=''
