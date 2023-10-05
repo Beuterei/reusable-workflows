@@ -9,11 +9,8 @@
         type: string
       package_manager:
         default: npm
-        description: Package manager to use
-        options:
-          - npm
-          - bun
-        type: choice
+        description: Package manager to use. Can be 'npm' or 'bun'
+        type: string
       format_command:
         description: Format command to run. Disabled by default
         default:
