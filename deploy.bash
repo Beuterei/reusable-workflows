@@ -10,11 +10,11 @@ set -e
 ##########################################################################################
 
 ### Needs those variables in the environment ###
-# ENVIRONMENT_NAME  - Name of the enviroment to deploy
+# ENVIRONMENT_NAME  - Name of the environment to deploy
 # REPO_NAME         - Repository name to deploy
 # REPO_URL          - Repository url to deploy
 # REVISON           - Git revison to deploy
-# ENVIRONMENT       - Enviroment file string to be used with docker-compose files
+# ENVIRONMENT       - Environment file string to be used with docker-compose files
 ### Variables end ###
 
 ### Configuration ###
@@ -43,7 +43,7 @@ git fetch
 # Checkout to target revison
 git checkout --detach "$REVISON"
 
-# Write enviroment string to file
+# Write environment string to file
 echo "$ENVIRONMENT" > .env.local
 
 # Pull newer images

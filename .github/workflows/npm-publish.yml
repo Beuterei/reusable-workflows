@@ -28,7 +28,7 @@ jobs:
       name: ${{ inputs.dist_tag }}
       url: ${{ steps.package-version-url.outputs.packageVersionUrl }}
     steps:
-      - uses: ./.github/workflows/environment-setup
+      - uses: Beuterei/reusable-workflows/.github/workflows/environment-setup.yml@main
         with:
           package_manager: ${{ inputs.package_manager }}
           node_version: ${{ inputs.node_version }}
