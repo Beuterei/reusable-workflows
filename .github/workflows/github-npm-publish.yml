@@ -11,6 +11,13 @@
         default: "18"
         required: false
         type: string
+      package_manager:
+        default: npm
+        description: Package manager to use
+        options:
+          - npm
+          - bun
+        type: choice
 
 jobs:
   publish:
@@ -18,14 +25,11 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: ./.github/workflows/environment-setup
         with:
-          registry-url: https://npm.pkg.github.com
-          node-version: ${{ inputs.node_version }}
-          cache: npm
-      - name: Install node dependencies
-        run: npm ci
+          package_manager: ${{ inputs.package_manager }}
+          node_version: ${{ inputs.node_version }}
+          registry_url: https://npm.pkg.github.com
       - name: Update version to include commit hash
         run: npm version "$(npm pkg get version | sed 's/\"//g')"-"$(date +%s)".${{ github.sha }} --allow-same-version --git-tag-version=false --tag-version-prefix=''
       - name: Publish to ${{ inputs.dist_tag }} tag with npm registry

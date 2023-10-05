@@ -1,0 +1,58 @@
+---
+"on":
+  workflow_call:
+    inputs:
+      package_manager:
+        default: npm
+        description: Package manager to use
+        options:
+          - npm
+          - bun
+        type: choice
+      dependencies_type:
+        default: prod
+        description: Dependencies type to install
+        options:
+          - prod
+          - dev
+        type: choice
+      node_version:
+        description: Node version to setup
+        default: "18"
+        required: false
+        type: string
+      registry_url:
+        description: Registry url to use
+        default: https://registry.npmjs.org
+        required: false
+        type: string
+
+jobs:
+  setup-npm:
+    if: inputs.package_manager == 'npm'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          registry-url: ${{ inputs.registry_url }}
+          node-version: ${{ inputs.node_version }}
+          cache: npm
+      - name: Install node dependencies
+        run: npm ci ${{ inputs.dependencies_type == 'prod' && '--omit=dev' || '' }}
+  setup-bun:
+    if: inputs.package_manager == 'bun'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          registry-url: ${{ inputs.registry_url }}
+          node-version: ${{ inputs.node_version }}
+      - uses: oven-sh/setup-bun@v1
+      - uses: actions/cache@v2
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+      - name: Install node dependencies
+        run: bun install --frozen-lockfile ${{ inputs.dependencies_type == 'prod' && '--production' || '' }}
