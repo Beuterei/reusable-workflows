@@ -54,7 +54,7 @@ jobs:
     steps:
       - uses: ./.github/workflows/environment-setup
         with:
-          package_manager: ${{ inputs.package_manager }}
+          package_manager: npm
           node_version: ${{ matrix.node_version }}
           dependencies_type: dev
       - name: Extract the last matrix job index
