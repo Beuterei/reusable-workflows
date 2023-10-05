@@ -7,6 +7,13 @@
         default: "['16.x', '17.x', '18.x']"
         required: false
         type: string
+      package_manager:
+        default: npm
+        description: Package manager to use
+        options:
+          - npm
+          - bun
+        type: choice
       format_command:
         description: Format command to run. Disabled by default
         default:

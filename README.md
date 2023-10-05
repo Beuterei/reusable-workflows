@@ -121,6 +121,7 @@ Testing for node app using npm as package manager, libraries and components.
 | Name                   | Description                                                         | Type      | Default                    | Required |
 | ---------------------- | ------------------------------------------------------------------- | --------- | -------------------------- | -------- |
 | `node_versions`        | Node versions matrix to test on.                                    | `string`  | `['16.x', '17.x', '18.x']` | `false`  |
+| `package_manager`      | Package manager to use.                                             | `choice`  | `npm`                      | `false`  |
 | `format_command`       | Format command to run. To disable set to `''`.                      | `string`  | `npm run format`           | `false`  |
 | `lint_command`         | Lint command to run. To disable set to `''`.                        | `string`  | `npm run lint`             | `false`  |
 | `build_command`        | Build command to run.                                               | `string`  | `npm run build`            | `false`  |
