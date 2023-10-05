@@ -4,18 +4,12 @@
     inputs:
       package_manager:
         default: npm
-        description: Package manager to use
-        options:
-          - npm
-          - bun
-        type: choice
+        description: Package manager to use. Can be 'npm' or 'bun'
+        type: string
       dependencies_type:
         default: prod
-        description: Dependencies type to install
-        options:
-          - prod
-          - dev
-        type: choice
+        description: Dependencies type to install. Can be 'prod' or 'dev'
+        type: string
       node_version:
         description: Node version to setup
         default: "18"

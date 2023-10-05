@@ -165,12 +165,12 @@ Checks out the commit, set up the node env and setup the package manager with ca
 
 #### Inputs
 
-| Name                | Description                                    | Type     | Default                      | Required |
-| ------------------- | ---------------------------------------------- | -------- | ---------------------------- | -------- |
-| `node_versions`     | Node versions matrix to test on.               | `string` | `['16.x', '17.x', '18.x']`   | `false`  |
-| `package_manager`   | Package manager to use. Can be 'npm' or 'bun'. | `string` | `npm`                        | `false`  |
-| `dependencies_type` | Dependencies type to install.                  | `choice` | `prod`                       | `false`  |
-| `registry_url`      | Registry url to use.                           | `string` | `https://registry.npmjs.org` | `false`  |
+| Name                | Description                                          | Type     | Default                      | Required |
+| ------------------- | ---------------------------------------------------- | -------- | ---------------------------- | -------- |
+| `node_versions`     | Node versions matrix to test on.                     | `string` | `['16.x', '17.x', '18.x']`   | `false`  |
+| `package_manager`   | Package manager to use. Can be 'npm' or 'bun'.       | `string` | `npm`                        | `false`  |
+| `dependencies_type` | Dependencies type to install. Can be 'prod' or 'dev' | `string` | `prod`                       | `false`  |
+| `registry_url`      | Registry url to use.                                 | `string` | `https://registry.npmjs.org` | `false`  |
 
 ## Directory structure and file naming
 
