@@ -39,10 +39,11 @@ Publish a NPM package to the NPM registry.
 
 #### Inputs
 
-| Name           | Description                 | Type     | Default  | Required |
-| -------------- | --------------------------- | -------- | -------- | -------- |
-| `dist_tag`     | NPM dist tag to publish to. | `string` | `latest` | `false`  |
-| `node_version` | Node version to build on.   | `string` | `18`     | `false`  |
+| Name              | Description                 | Type     | Default  | Required |
+| ----------------- | --------------------------- | -------- | -------- | -------- |
+| `dist_tag`        | NPM dist tag to publish to. | `string` | `latest` | `false`  |
+| `node_version`    | Node version to build on.   | `string` | `18`     | `false`  |
+| `package_manager` | Package manager to use.     | `choice` | `npm`    | `false`  |
 
 #### Secrets
 
@@ -60,10 +61,11 @@ Publish a NPM package to the GitHub registry.
 
 #### Inputs
 
-| Name           | Description                 | Type     | Default | Required |
-| -------------- | --------------------------- | -------- | ------- | -------- |
-| `dist_tag`     | NPM dist tag to publish to. | `string` | ``      | `true`   |
-| `node_version` | Node version to build on.   | `string` | `18`    | `false`  |
+| Name              | Description                 | Type     | Default | Required |
+| ----------------- | --------------------------- | -------- | ------- | -------- |
+| `dist_tag`        | NPM dist tag to publish to. | `string` | ``      | `true`   |
+| `node_version`    | Node version to build on.   | `string` | `18`    | `false`  |
+| `package_manager` | Package manager to use.     | `choice` | `npm`   | `false`  |
 
 #### Secrets
 
@@ -119,6 +121,7 @@ Testing for node app, libraries and components.
 | Name                   | Description                                                         | Type      | Default                    | Required |
 | ---------------------- | ------------------------------------------------------------------- | --------- | -------------------------- | -------- |
 | `node_versions`        | Node versions matrix to test on.                                    | `string`  | `['16.x', '17.x', '18.x']` | `false`  |
+| `package_manager`      | Package manager to use.                                             | `choice`  | `npm`                      | `false`  |
 | `format_command`       | Format command to run. To disable set to `''`.                      | `string`  | `npm run format`           | `false`  |
 | `lint_command`         | Lint command to run. To disable set to `''`.                        | `string`  | `npm run lint`             | `false`  |
 | `build_command`        | Build command to run.                                               | `string`  | `npm run build`            | `false`  |
@@ -132,6 +135,19 @@ Testing for node app, libraries and components.
 | --------------- | ------- | -------------------------------------------------------------------- |
 | `pull-requests` | `write` | Only needed if job is used in a job with the `pull_request` trigger. |
 | `contents`      | `write` | Only needed if job is used in a job with the `push` trigger.         |
+
+### [Environment Setup](.github/workflows/environment-setup.yml)
+
+Checks out the commit, set up the node env and setup the package manager with caching.
+
+#### Inputs
+
+| Name                | Description                      | Type     | Default                      | Required |
+| ------------------- | -------------------------------- | -------- | ---------------------------- | -------- |
+| `node_versions`     | Node versions matrix to test on. | `string` | `['16.x', '17.x', '18.x']`   | `false`  |
+| `package_manager`   | Package manager to use.          | `choice` | `npm`                        | `false`  |
+| `dependencies_type` | Dependencies type to install.    | `choice` | `prod`                       | `false`  |
+| `registry_url`      | Registry url to use.             | `string` | `https://registry.npmjs.org` | `false`  |
 
 ## Directory structure and file naming
 
