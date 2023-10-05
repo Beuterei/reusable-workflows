@@ -49,7 +49,7 @@ jobs:
       matrix:
         node_version: ${{ fromJson(inputs.node_versions) }}
     steps:
-      - uses: ./.github/workflows/environment-setup
+      - uses: Beuterei/reusable-workflows/.github/workflows/environment-setup.yml@main
         with:
           package_manager: npm
           node_version: ${{ matrix.node_version }}
