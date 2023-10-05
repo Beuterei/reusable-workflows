@@ -7,13 +7,6 @@
         default: "['16.x', '17.x', '18.x']"
         required: false
         type: string
-      package_manager:
-        default: npm
-        description: Package manager to use
-        options:
-          - npm
-          - bun
-        type: choice
       format_command:
         description: Format command to run. Disabled by default
         default:
@@ -54,7 +47,7 @@ jobs:
     steps:
       - uses: ./.github/workflows/environment-setup
         with:
-          package_manager: ${{ inputs.package_manager }}
+          package_manager: npm
           node_version: ${{ matrix.node_version }}
           dependencies_type: dev
       - name: Extract the last matrix job index
