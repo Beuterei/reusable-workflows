@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Reusable workflows for github actions",
   "scripts": {
-    "lint": "eslint ./.github",
+    "lint": "eslint .",
     "prepare": "husky"
   },
   "author": "Luis Beu <me@luisbeu.de> (https://luisbeu.de/)",
