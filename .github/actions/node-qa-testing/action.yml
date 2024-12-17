@@ -30,8 +30,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: typesafegithub/github-actions-typing@v1
-
     - uses: ./.github/actions/node-environment-setup
       with:
         package_manager: ${{ inputs.package_manager }}
