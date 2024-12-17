@@ -13,14 +13,14 @@ inputs:
   aws_secret_access_key:
     description: 'AWS Secret Access Key'
     required: true
-  build_script:
-    description: 'Build script to run'
-    required: false
-    default: 'build'
   build_path:
     description: 'Path to the build directory'
     default: 'dist'
     required: false
+  build_script:
+    description: 'Build script to run'
+    required: false
+    default: 'build'
   endpoint_url:
     description: 'AWS endpoint URL'
     required: false
@@ -35,6 +35,10 @@ inputs:
   s3_bucket:
     description: 'S3 bucket name'
     required: true
+  target_path:
+    description: 'Target path within the S3 bucket'
+    required: false
+    default: ${{ github.event.repository.name }}
 
 runs:
   using: "composite"
@@ -57,8 +61,13 @@ runs:
         aws-access-key-id: ${{ inputs.aws_access_key_id }}
         aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
         aws-region: ${{ inputs.aws_region }}
+        mask-aws-account-id: true
 
     - name: Deploy to S3
       shell: bash
       run: |
-        aws s3 sync ${{ inputs.build_path }} s3://${{ inputs.s3_bucket }} --delete --endpoint-url ${{ inputs.endpoint_url }}
+        if [ -n "${{ inputs.endpoint_url }}" ]; then
+          aws s3 sync ${{ inputs.build_path }} s3://${{ inputs.s3_bucket }}/${{ inputs.target_path }} --delete --endpoint-url ${{ inputs.endpoint_url }}
+        else
+          aws s3 sync ${{ inputs.build_path }} s3://${{ inputs.s3_bucket }}/${{ inputs.target_path }} --delete
+        fi
