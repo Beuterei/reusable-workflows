@@ -8,7 +8,7 @@ inputs:
   aws_region:
     description: 'AWS Region'
     required: false
-    default: 'us-east-1'
+    default: 'nbg1'
   aws_secret_access_key:
     description: 'AWS Secret Access Key'
     required: true
@@ -19,6 +19,10 @@ inputs:
   path_to_upload:
     description: 'Path to the files to upload'
     required: true
+  provider:
+    description: 'Cloud provider'
+    required: true
+    default: 'hcloud'
   s3_bucket:
     description: 'S3 bucket name'
     required: true
@@ -33,9 +37,10 @@ runs:
     - name: Configure AWS Credentials
       uses: s3-actions/s3cmd@v1
       with:
-        provider: hcloud
+        provider: ${{ inputs.provider }}
         access_key: ${{ inputs.aws_access_key_id }}
         secret_key: ${{ inputs.aws_secret_access_key }}
+        region: ${{ inputs.aws_region }}
 
     - name: Deploy to S3
       shell: bash
