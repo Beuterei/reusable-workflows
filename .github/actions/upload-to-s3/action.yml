@@ -8,7 +8,7 @@ inputs:
   aws_region:
     description: 'AWS Region'
     required: false
-    default: 'nbg1'
+    default: 'US'
   aws_secret_access_key:
     description: 'AWS Secret Access Key'
     required: true
@@ -37,7 +37,7 @@ runs:
         echo "access_key = ${{ inputs.aws_access_key_id }}" >> ~/.s3cfg
         echo "secret_key = ${{ inputs.aws_secret_access_key }}" >> ~/.s3cfg
         echo "host_base = ${{ inputs.endpoint_url }}" >> ~/.s3cfg
-        echo "use_https = True" >> ~/.s3cfg
+        echo "host_bucket = %(bucket)s.${{ inputs.endpoint_url }}" >> ~/.s3cfg
 
     - name: Deploy to S3-compatible storage
       shell: bash
