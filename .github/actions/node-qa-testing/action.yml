@@ -1,0 +1,57 @@
+name: 'Node QA Testing'
+description: 'Runs QA testing with Node.js supporting both Bun and npm'
+
+# TODO: Add coverage support
+inputs:
+  build_command:
+    description: 'Build command to run'
+    required: false
+    default: '${{ inputs.package_manager }} run build'
+  format_command:
+    description: 'Format command to run. Disabled by default'
+    required: false
+    default: ''
+  lint_command:
+    description: 'Lint command to run. To disable set to '''
+    required: false
+    default: '${{ inputs.package_manager }} run lint'
+  node_version:
+    description: 'Node version to test on'
+    required: false
+  package_manager:
+    description: 'Package manager to use. Can be "npm" or "bun"'
+    required: false
+  test_command:
+    description: 'Base test command to run. To disable set to '''
+    required: false
+    default: '${{ inputs.package_manager }} run test'
+
+runs:
+  using: "composite"
+  steps:
+    - uses: typesafegithub/github-actions-typing@v1
+
+    - uses: ./.github/actions/node-environment-setup
+      with:
+        package_manager: ${{ inputs.package_manager }}
+        node_version: ${{ inputs.node_version }}
+        dependencies_type: development
+
+    - name: Check formatting
+      if: inputs.format_command != ''
+      shell: bash
+      run: ${{ inputs.format_command }}
+
+    - name: Check linting
+      if: inputs.lint_command != ''
+      shell: bash
+      run: ${{ inputs.lint_command }}
+
+    - name: Run test build
+      shell: bash
+      run: ${{ inputs.build_command }}
+
+    - name: Run tests
+      if: inputs.test_command != ''
+      shell: bash
+      run: ${{ inputs.test_command }}

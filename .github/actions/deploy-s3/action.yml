@@ -1,0 +1,64 @@
+name: 'Build and Deploy to S3'
+description: 'Builds the project and deploys it to S3'
+
+inputs:
+  aws_access_key_id:
+    description: 'AWS Access Key ID'
+    required: true
+  aws_region:
+    description: 'AWS Region'
+    required: false
+    default: 'us-east-1'
+  aws_secret_access_key:
+    description: 'AWS Secret Access Key'
+    required: true
+  build_command:
+    description: 'Command to build the project'
+    required: false
+    default: '${{ inputs.package_manager }} run build'
+  build_path:
+    description: 'Path to the build directory'
+    default: 'dist'
+    required: false
+  endpoint_url:
+    description: 'AWS endpoint URL'
+    required: false
+    default: ''
+  node_version:
+    description: 'Node.js version to use'
+    required: false
+  package_manager:
+    description: 'Package manager to use. Can be "npm" or "bun"'
+    required: false
+    default: 'npm'
+  s3_bucket:
+    description: 'S3 bucket name'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: typesafegithub/github-actions-typing@v1
+
+    - uses: ./.github/actions/node-environment-setup
+      with:
+        node_version: ${{ inputs.node_version }}
+        dependencies_type: 'development'
+        package_manager: ${{ inputs.package_manager }}
+
+    - name: Build Project
+      shell: bash
+      run: ${{ inputs.build_command }}
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ inputs.aws_access_key_id }}
+        aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
+        aws-region: ${{ inputs.aws_region }}
+        endpoint-url: ${{ inputs.endpoint_url }}
+
+    - name: Deploy to S3
+      shell: bash
+      run: |
+        aws s3 sync ${{ inputs.build_path }} s3://${{ inputs.s3_bucket }} --delete
