@@ -1,6 +1,7 @@
 name: 'Bun Environment Setup'
 description: 'Setup bun and install dependencies'
 
+# TODO: add build action with cache
 inputs:
   dependencies_type:
     description: 'Dependencies type to install. Can be "production" or "development"'
@@ -25,19 +26,19 @@ runs:
 
     - name: Restore cached dependencies
       uses: actions/cache/restore@v4
-      id: cache
+      id: restore-dependencies-cache
       with:
         path: node_modules
         key: dependencies-${{ runner.os }}-${{ hashFiles('**/bun.lockb') }}
 
     - name: Install bun dependencies
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.restore-dependencies-cache.outputs.cache-hit != 'true'
       shell: bash
       run: bun install --frozen-lockfile ${{ inputs.dependencies_type == 'production' && '--production' || '' }}
 
     - name: Cache dependencies
       uses: actions/cache@v4
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.restore-dependencies-cache.outputs.cache-hit != 'true'
       with:
         path: node_modules
         key: dependencies-${{ runner.os }}-${{ hashFiles('**/bun.lockb') }}

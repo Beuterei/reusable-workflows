@@ -42,7 +42,7 @@ runs:
       if: inputs.endpoint_url != ''
       shell: bash
       run: |
-        aws configure set s3.endpoint_url ${{ inputs.endpoint_url }}
+        aws configure set endpoint_url ${{ inputs.endpoint_url }}
 
     - name: Deploy to S3
       shell: bash
