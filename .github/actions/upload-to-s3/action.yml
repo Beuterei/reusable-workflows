@@ -44,4 +44,4 @@ runs:
     - name: Deploy to S3-compatible storage
       shell: bash
       run: |
-        s3cmd sync ${{ inputs.source_path }} s3://${{ inputs.bucket_name }}/${{ inputs.destination_path }} --delete
+        s3cmd sync ${{ inputs.source_path }} s3://${{ inputs.bucket_name }}/${{ inputs.destination_path }} --delete-removed
