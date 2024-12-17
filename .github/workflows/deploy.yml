@@ -32,7 +32,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.0
         env:
           ENVIRONMENT_NAME: ${{ inputs.environment_name }}
-          REPO_NAME: ${{ github.repository }}
+          REPO_NAME: ${{ github.event.repository.name }}
           REPO_URL: https://github.com/${{ github.repository }}
           REVISON: ${{ github.ref }}
           ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
