@@ -3,6 +3,7 @@ description: 'Runs QA testing with Node.js supporting both Bun and npm'
 
 # TODO: Add coverage support
 # TODO: Use Eslint
+# TODO: Split into separate "tooling" actions
 inputs:
   format_script:
     description: 'Format script to run. Disabled by default'
