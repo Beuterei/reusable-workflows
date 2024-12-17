@@ -21,6 +21,7 @@ inputs:
     required: false
   package_manager:
     description: 'Package manager to use. Can be "npm" or "bun"'
+    default: 'npm'
     required: false
   test_script:
     description: 'Base test script to run. To disable set to '''
