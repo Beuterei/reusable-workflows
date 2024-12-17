@@ -48,8 +48,8 @@ runs:
       shell: bash
       run: |
         echo "[default]" > ~/.s3cfg
-        echo "access_key = ${{ secrets.YOUR_ACCESS_KEY }}" >> ~/.s3cfg
-        echo "secret_key = ${{ secrets.YOUR_SECRET_KEY }}" >> ~/.s3cfg
+        echo "access_key = ${{ inputs.aws_access_key_id }}" >> ~/.s3cfg
+        echo "secret_key = ${{ inputs.aws_secret_access_key }}" >> ~/.s3cfg
         echo "host_base = ${{ inputs.endpoint_url }}" >> ~/.s3cfg
         echo "use_https = True" >> ~/.s3cfg
 
