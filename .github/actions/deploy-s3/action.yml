@@ -41,7 +41,7 @@ runs:
   steps:
     - uses: actions/checkout@v4
 
-    - uses: ./.github/actions/node-environment-setup
+    - uses: Beuterei/reusable-workflows/.github/actions/node-environment-setup@main
       with:
         node_version: ${{ inputs.node_version }}
         dependencies_type: 'development'
