@@ -2,27 +2,23 @@ name: 'Upload to S3'
 description: 'Uploads files to S3'
 
 inputs:
-  aws_access_key_id:
+  access_key:
     description: 'AWS Access Key ID'
     required: true
-  aws_region:
-    description: 'AWS Region'
-    required: false
-    default: 'US'
-  aws_secret_access_key:
+  secret_key:
     description: 'AWS Secret Access Key'
     required: true
-  endpoint_url:
+  endpoint:
     description: 'AWS endpoint URL'
     required: false
     default: ''
-  path_to_upload:
+  source_path:
     description: 'Path to the files to upload'
     required: true
-  s3_bucket:
-    description: 'S3 bucket name'
+  bucket_name:
+    description: 'Bucket name'
     required: true
-  target_path:
+  destination_path:
     description: 'Target path within the S3 bucket'
     required: false
     default: ${{ github.event.repository.name }}
@@ -30,16 +26,22 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Install s3cmd
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y s3cmd
+
     - name: Configure s3cmd
       shell: bash
       run: |
         echo "[default]" > ~/.s3cfg
-        echo "access_key = ${{ inputs.aws_access_key_id }}" >> ~/.s3cfg
-        echo "secret_key = ${{ inputs.aws_secret_access_key }}" >> ~/.s3cfg
-        echo "host_base = ${{ inputs.endpoint_url }}" >> ~/.s3cfg
-        echo "host_bucket = %(bucket)s.${{ inputs.endpoint_url }}" >> ~/.s3cfg
+        echo "access_key = ${{ inputs.access_key }}" >> ~/.s3cfg
+        echo "secret_key = ${{ inputs.secret_key }}" >> ~/.s3cfg
+        echo "host_base = ${{ inputs.endpoint }}" >> ~/.s3cfg
+        echo "host_bucket = %(bucket)s.${{ inputs.endpoint }}" >> ~/.s3cfg
 
     - name: Deploy to S3-compatible storage
       shell: bash
       run: |
-        s3cmd sync ${{ inputs.path_to_upload }} s3://${{ inputs.s3_bucket }}/${{ inputs.target_path }} --delete
+        s3cmd sync ${{ inputs.source_path }} s3://${{ inputs.bucket_name }}/${{ inputs.destination_path }} --delete
