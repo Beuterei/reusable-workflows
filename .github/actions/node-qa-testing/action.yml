@@ -26,7 +26,7 @@ inputs:
   test_script:
     description: 'Base test script to run. To disable set to '''
     required: false
-    default: 'test'
+    default: 'test:cov'
 
 runs:
   using: "composite"

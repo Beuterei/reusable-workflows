@@ -57,6 +57,12 @@ runs:
         aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
         aws-region: ${{ inputs.aws_region }}
 
+    - name: Configure Endpoint URL
+      if: inputs.endpoint_url != ''
+      shell: bash
+      run: |
+        aws configure set endpoint-url ${{ inputs.endpoint_url }}
+
     - name: Deploy to S3
       shell: bash
       run: |
