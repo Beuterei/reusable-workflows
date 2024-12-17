@@ -22,7 +22,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: ./.github/actions/node-environment-setup
+      - uses: ./.github/actions/npm-environment-setup
         with:
           package_manager: ${{ inputs.package_manager }}
           node_version: ${{ inputs.node_version }}

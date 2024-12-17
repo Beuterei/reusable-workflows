@@ -1,0 +1,44 @@
+name: 'NPM Environment Setup'
+description: 'Setup node and install dependencies'
+
+inputs:
+  dependencies_type:
+    description: 'Dependencies type to install. Can be "production" or "development"'
+    default: 'production'
+    required: false
+  node_version:
+    description: 'Node version to setup'
+    default: '22.12'
+    required: false
+  registry_url:
+    description: 'Registry url to use'
+    default: 'https://registry.npmjs.org'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        registry-url: ${{ inputs.registry_url }}
+        node-version: ${{ inputs.node_version }}
+        cache: dependencies-${{ inputs.package_manager == 'npm' && 'npm' || '' }}
+
+    - name: Restore cached dependencies
+      uses: actions/cache/restore@v4
+      id: cache
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Install npm dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: npm ci ${{ inputs.dependencies_type == 'production' && '--omit=dev' || '' }}
+
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      if: steps.cache.outputs.cache-hit != 'true'
+      with:
+        path: node_modules
+        key: dependencies-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}

@@ -4,10 +4,6 @@ description: 'Runs QA testing with Node.js supporting both Bun and npm'
 # TODO: Add coverage support
 # TODO: Use Eslint
 inputs:
-  build_script:
-    description: 'Build script to run'
-    required: false
-    default: 'build'
   format_script:
     description: 'Format script to run. Disabled by default'
     required: false
@@ -16,9 +12,6 @@ inputs:
     description: 'Lint script to run. To disable set to '''
     required: false
     default: 'lint'
-  node_version:
-    description: 'Node version to test on'
-    required: false
   package_manager:
     description: 'Package manager to use. Can be "npm" or "bun"'
     default: 'npm'
@@ -31,13 +24,14 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v4
-
-    - uses: Beuterei/reusable-workflows/.github/actions/node-environment-setup@main
+    - name: Restore cached dependencies
+      uses: actions/cache/restore@v4
+      id: cache
       with:
-        package_manager: ${{ inputs.package_manager }}
-        node_version: ${{ inputs.node_version }}
-        dependencies_type: development
+        path: node_modules
+        key: dependencies-${{ runner.os }}-${{ hashFiles('**/bun.lockb') || hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          dependencies-${{ runner.os }}-
 
     - name: Check formatting
       if: inputs.format_script != ''
@@ -48,10 +42,6 @@ runs:
       if: inputs.lint_script != ''
       shell: bash
       run: ${{ inputs.package_manager }} run ${{ inputs.lint_script }}
-
-    - name: Run test build
-      shell: bash
-      run: ${{ inputs.package_manager }} run ${{ inputs.build_script }}
 
     - name: Run tests
       if: inputs.test_script != ''
