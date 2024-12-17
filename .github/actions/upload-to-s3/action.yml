@@ -30,20 +30,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        aws-access-key-id: ${{ inputs.aws_access_key_id }}
-        aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
-        aws-region: ${{ inputs.aws_region }}
-        mask-aws-account-id: true
-
-    - name: Set endpoint URL
-      if: inputs.endpoint_url != ''
-      shell: bash
-      run: |
-        aws configure set endpoint_url ${{ inputs.endpoint_url }}
-
     - name: Configure s3cmd
       shell: bash
       run: |
