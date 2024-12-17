@@ -40,7 +40,7 @@ runs:
   steps:
     - uses: actions/checkout@v4
 
-    - uses: Beuterei/reusable-workflows/.github/actions/node-qa-testing@main
+    - uses: Beuterei/reusable-workflows/.github/actions/node-environment-setup@main
       with:
         node_version: ${{ inputs.node_version }}
         dependencies_type: 'development'

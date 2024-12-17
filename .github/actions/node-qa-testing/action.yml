@@ -32,7 +32,7 @@ runs:
   steps:
     - uses: actions/checkout@v4
 
-    - uses: Beuterei/reusable-workflows/.github/actions/node-qa-testing@main
+    - uses: Beuterei/reusable-workflows/.github/actions/node-environment-setup@main
       with:
         package_manager: ${{ inputs.package_manager }}
         node_version: ${{ inputs.node_version }}
