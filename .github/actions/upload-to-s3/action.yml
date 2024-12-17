@@ -36,7 +36,6 @@ runs:
         aws-access-key-id: ${{ inputs.aws_access_key_id }}
         aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
         aws-region: ${{ inputs.aws_region }}
-        aws-session-token: ''
         mask-aws-account-id: true
 
     - name: Set endpoint URL
@@ -45,7 +44,16 @@ runs:
       run: |
         aws configure set endpoint_url ${{ inputs.endpoint_url }}
 
-    - name: Deploy to S3
+    - name: Configure s3cmd
+      shell: bash
+      run: |
+        echo "[default]" > ~/.s3cfg
+        echo "access_key = ${{ secrets.YOUR_ACCESS_KEY }}" >> ~/.s3cfg
+        echo "secret_key = ${{ secrets.YOUR_SECRET_KEY }}" >> ~/.s3cfg
+        echo "host_base = ${{ inputs.endpoint_url }}" >> ~/.s3cfg
+        echo "use_https = True" >> ~/.s3cfg
+
+    - name: Deploy to S3-compatible storage
       shell: bash
       run: |
         s3cmd sync ${{ inputs.path_to_upload }} s3://${{ inputs.s3_bucket }}/${{ inputs.target_path }} --delete
