@@ -12,10 +12,10 @@ inputs:
   aws_secret_access_key:
     description: 'AWS Secret Access Key'
     required: true
-  build_command:
-    description: 'Command to build the project'
+  build_script:
+    description: 'Build script to run'
     required: false
-    default: '${{ inputs.package_manager }} run build'
+    default: 'build'
   build_path:
     description: 'Path to the build directory'
     default: 'dist'
@@ -48,7 +48,7 @@ runs:
 
     - name: Build Project
       shell: bash
-      run: ${{ inputs.build_command }}
+      run: ${{ inputs.package_manager }} run ${{ inputs.build_script }}
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v4

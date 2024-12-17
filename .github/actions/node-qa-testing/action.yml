@@ -2,29 +2,30 @@ name: 'Node QA Testing'
 description: 'Runs QA testing with Node.js supporting both Bun and npm'
 
 # TODO: Add coverage support
+# TODO: Use Eslint
 inputs:
-  build_command:
-    description: 'Build command to run'
+  build_script:
+    description: 'Build script to run'
     required: false
-    default: '${{ inputs.package_manager }} run build'
-  format_command:
-    description: 'Format command to run. Disabled by default'
+    default: 'build'
+  format_script:
+    description: 'Format script to run. Disabled by default'
     required: false
     default: ''
-  lint_command:
-    description: 'Lint command to run. To disable set to '''
+  lint_script:
+    description: 'Lint script to run. To disable set to '''
     required: false
-    default: '${{ inputs.package_manager }} run lint'
+    default: 'lint'
   node_version:
     description: 'Node version to test on'
     required: false
   package_manager:
     description: 'Package manager to use. Can be "npm" or "bun"'
     required: false
-  test_command:
-    description: 'Base test command to run. To disable set to '''
+  test_script:
+    description: 'Base test script to run. To disable set to '''
     required: false
-    default: '${{ inputs.package_manager }} run test'
+    default: 'test'
 
 runs:
   using: "composite"
@@ -38,20 +39,20 @@ runs:
         dependencies_type: development
 
     - name: Check formatting
-      if: inputs.format_command != ''
+      if: inputs.format_script != ''
       shell: bash
-      run: ${{ inputs.format_command }}
+      run: ${{ inputs.package_manager }} run ${{ inputs.format_script }}
 
     - name: Check linting
-      if: inputs.lint_command != ''
+      if: inputs.lint_script != ''
       shell: bash
-      run: ${{ inputs.lint_command }}
+      run: ${{ inputs.package_manager }} run ${{ inputs.lint_script }}
 
     - name: Run test build
       shell: bash
-      run: ${{ inputs.build_command }}
+      run: ${{ inputs.package_manager }} run ${{ inputs.build_script }}
 
     - name: Run tests
-      if: inputs.test_command != ''
+      if: inputs.test_script != ''
       shell: bash
-      run: ${{ inputs.test_command }}
+      run: ${{ inputs.package_manager }} run ${{ inputs.test_script }}
