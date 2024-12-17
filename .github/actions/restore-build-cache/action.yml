@@ -1,0 +1,16 @@
+name: Restore build cache
+description: Restore build cache
+
+inputs:
+  build_path:
+    description: "The path to the build script."
+    default: "dist/"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/cache/restore@v4
+      with:
+        path: ${{ inputs.build_path }}
+        key: build-${{ runner.os }}-${{ github.sha }}

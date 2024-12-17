@@ -1,5 +1,5 @@
-name: 'Restore Dependency Cache'
-description: 'Restores cached dependencies'
+name: "Restore Dependency Cache"
+description: "Restores cached dependencies"
 
 runs:
   using: "composite"
@@ -9,5 +9,3 @@ runs:
       with:
         path: node_modules
         key: dependencies-${{ runner.os }}-${{ hashFiles('**/bun.lockb') || hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          dependencies-${{ runner.os }}-

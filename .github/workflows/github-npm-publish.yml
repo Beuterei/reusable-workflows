@@ -1,5 +1,4 @@
----
-"on":
+on:
   workflow_call:
     inputs:
       dist_tag:

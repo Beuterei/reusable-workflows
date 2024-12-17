@@ -1,0 +1,22 @@
+{
+  "name": "@beuluis/reusable-workflows",
+  "version": "0.0.0",
+  "description": "Reusable workflows for github actions",
+  "scripts": {
+    "lint": "eslint ./.github",
+    "prepare": "husky"
+  },
+  "author": "Luis Beu <me@luisbeu.de> (https://luisbeu.de/)",
+  "license": "MIT",
+  "devDependencies": {
+    "@beuluis/eslint-config": "2.0.1",
+    "eslint": "8.57.1",
+    "husky": "9.1.7",
+    "lint-staged": "15.2.11"
+  },
+  "lint-staged": {
+    "*.{js,ts,json,yml,yaml}": [
+      "eslint"
+    ]
+  }
+}

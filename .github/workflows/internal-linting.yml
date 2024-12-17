@@ -1,26 +1,20 @@
----
-"on":
+on:
   pull_request:
     branches:
       - main
   push:
 
 jobs:
-  yamllint:
+  linting:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      pull-requests: read
+      checks: write
     steps:
-      - uses: actions/checkout@v3
-      - name: Run yamllint
-        uses: karancode/yamllint-github-action@master
+      - uses: actions/checkout@v4
+      - name: Run linting
+        uses: Beuterei/reusable-workflows/.github/actions/eslint-runner@main
         with:
-          yamllint_strict: true
-
-  actionlint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
-        with:
-          go-version: stable
-      - run: go install github.com/rhysd/actionlint/cmd/actionlint@latest
-      - run: actionlint
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

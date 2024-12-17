@@ -1,27 +1,27 @@
-name: 'Upload to S3'
-description: 'Uploads files to S3'
+name: "Upload to S3"
+description: "Uploads files to S3"
 
 inputs:
   access_key:
-    description: 'AWS access key for authentication.'
+    description: "AWS access key for authentication."
     required: true
   secret_key:
-    description: 'AWS secret key for authentication.'
+    description: "AWS secret key for authentication."
     required: true
   endpoint:
-    description: 'Custom endpoint for S3-compatible storage. Use this if you are not using AWS S3, but a compatible service.'
+    description: "Custom endpoint for S3-compatible storage. Use this if you are not using AWS S3, but a compatible service."
     required: false
-    default: ''
+    default: ""
   source_path:
-    description: 'Local path to the files to upload. Ensure this path ends with a slash to correctly sync directories.'
+    description: "Local path to the files to upload. Ensure this path ends with a slash to correctly sync directories."
     required: true
   bucket_name:
-    description: 'Name of the S3 bucket where files will be uploaded.'
+    description: "Name of the S3 bucket where files will be uploaded."
     required: true
   destination_path:
-    description: 'Path within the S3 bucket where files will be stored. This should end with a slash to maintain directory structure.'
+    description: "Path within the S3 bucket where files will be stored. This should end with a slash to maintain directory structure."
     required: false
-    default: '${{ github.event.repository.name }}/'
+    default: "${{ github.event.repository.name }}/"
 
 runs:
   using: "composite"

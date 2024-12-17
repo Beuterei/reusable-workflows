@@ -1,13 +1,13 @@
-name: 'ESLint Runner'
-description: 'Runs ESLint on the codebase'
+name: "ESLint Runner"
+description: "Runs ESLint on the codebase"
 
 inputs:
   package_manager:
     description: 'The package manager to use for running scripts. Options are "npm" or "bun".'
-    default: 'npm'
+    default: "npm"
     required: false
   GITHUB_TOKEN:
-    description: 'The GitHub token to use for annotating code linting results.'
+    description: "The GitHub token to use for annotating code linting results."
     required: true
 
 runs:

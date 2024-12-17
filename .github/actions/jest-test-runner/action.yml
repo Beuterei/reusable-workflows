@@ -1,11 +1,11 @@
-name: 'Jest Test Runner'
-description: 'Runs Jest tests, with coverage reporting'
+name: "Jest Test Runner"
+description: "Runs Jest tests, with coverage reporting"
 
 # TODO: Add junit reporting
 inputs:
   package_manager:
     description: 'The package manager to use for running scripts. Options are "npm" or "bun".'
-    default: 'npm'
+    default: "npm"
     required: false
 
 runs:

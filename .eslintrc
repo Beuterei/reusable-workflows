@@ -1,0 +1,15 @@
+{
+    "extends": ["@beuluis/eslint-config"],
+    "root": true,
+    "overrides": [
+
+        {
+            "extends": ["@beuluis/eslint-config/json"],
+            "files": "*.json"
+        },
+        {
+            "extends": ["@beuluis/eslint-config/yaml"],
+            "files": "*.{yml,yaml}"
+        }
+    ]
+}

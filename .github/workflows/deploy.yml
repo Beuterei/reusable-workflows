@@ -1,5 +1,4 @@
----
-"on":
+on:
   workflow_call:
     inputs:
       environment_name:

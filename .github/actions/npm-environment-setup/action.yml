@@ -1,18 +1,18 @@
-name: 'NPM Environment Setup'
-description: 'Setup node and install dependencies'
+name: "NPM Environment Setup"
+description: "Setup node and install dependencies"
 
 inputs:
   dependencies_type:
     description: 'Specifies the type of dependencies to install. Choose "production" to install only production dependencies, or "development" to include development dependencies as well.'
-    default: 'production'
+    default: "production"
     required: false
   node_version:
-    description: 'The version of Node.js to set up in the environment. This ensures compatibility with your project requirements.'
-    default: '22.12'
+    description: "The version of Node.js to set up in the environment. This ensures compatibility with your project requirements."
+    default: "22.12"
     required: false
   registry_url:
-    description: 'The URL of the npm registry to use for installing packages. Defaults to the official npm registry.'
-    default: 'https://registry.npmjs.org'
+    description: "The URL of the npm registry to use for installing packages. Defaults to the official npm registry."
+    default: "https://registry.npmjs.org"
     required: false
 
 runs:
