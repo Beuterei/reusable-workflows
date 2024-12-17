@@ -1,0 +1,101 @@
+name: Build and Deploy a static app
+
+# TODO: Handle different package managers
+on:
+  workflow_call:
+    inputs:
+      bucket_name:
+        required: true
+        type: string
+        description: 'Name of the S3 bucket where files will be uploaded.'
+      endpoint:
+        required: false
+        type: string
+        description: 'Custom endpoint for S3-compatible storage. Use this if you are not using AWS S3, but a compatible service.'
+      ref:
+        required: false
+        type: string
+        description: 'The branch or tag to deploy. Defaults to the current branch.'
+        default: ${{ github.ref }}
+    secrets:
+      ACCESS_KEY:
+        required: true
+        description: 'AWS access key for authentication.'
+      SECRET_KEY:
+        required: true
+        description: 'AWS secret key for authentication.'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: Beuterei/reusable-workflows/.github/actions/npm-environment-setup@main
+        with:
+          dependencies_type: development
+
+  build:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache@main
+      - name: Restore cached build
+        id: restore-build-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: dist
+          key: build-${{ runner.os }}-${{ github.sha }}
+      - name: Build
+        if: steps.restore-build-cache.outputs.cache-hit != 'true'
+        run: npm run build
+      - name: Cache build output
+        if: steps.restore-build-cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        with:
+          path: dist
+          key: build-${{ runner.os }}-${{ github.sha }}
+
+  linting:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache@main
+      - name:
+        uses: Beuterei/reusable-workflows/.github/actions/eslint-runner@main
+
+
+  testing:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache@main
+      - name:
+        uses: Beuterei/reusable-workflows/.github/actions/jest-test-runner@main
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build, linting, testing]
+    steps:
+      - uses: actions/cache/restore@v4
+        with:
+          path: dist
+          key: build-${{ runner.os }}-${{ github.sha }}
+      - name: Deploy
+        uses: Beuterei/reusable-workflows/.github/actions/upload-to-s3@main
+        with:
+          access_key: ${{ secrets.ACCESS_KEY }}
+          secret_key: ${{ secrets.SECRET_KEY }}
+          bucket_name: ${{ inputs.bucket_name }}
+          endpoint: ${{ inputs.endpoint }}
+          source_path: dist/

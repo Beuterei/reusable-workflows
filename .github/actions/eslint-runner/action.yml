@@ -1,0 +1,29 @@
+name: 'ESLint Runner'
+description: 'Runs ESLint on the codebase'
+
+inputs:
+  package_manager:
+    description: 'The package manager to use for running scripts. Options are "npm" or "bun".'
+    default: 'npm'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run tests (bun)
+      if: inputs.package_manager == 'bun'
+      shell: bash
+      run: bunx eslint . --output-file eslint_report.json --format json
+
+    - name: Run tests (npm)
+      if: inputs.package_manager == 'npm'
+      shell: bash
+      run: npx eslint . --output-file eslint_report.json --format json
+
+    - name: Annotate Code Linting Results
+      if: always()
+      continue-on-error: true
+      uses: ataylorme/eslint-annotate-action@v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        report-json: "eslint_report.json"

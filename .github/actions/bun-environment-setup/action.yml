@@ -4,15 +4,15 @@ description: 'Setup bun and install dependencies'
 # TODO: add build action with cache
 inputs:
   dependencies_type:
-    description: 'Dependencies type to install. Can be "production" or "development"'
+    description: 'Specifies the type of dependencies to install. Choose "production" to install only production dependencies, or "development" to include development dependencies as well.'
     default: 'production'
     required: false
   bun_version:
-    description: 'Bun version to setup'
+    description: 'The version of Bun to set up in the environment. Use "latest" to get the most recent version.'
     default: 'latest'
     required: false
   registry_url:
-    description: 'Registry url to use'
+    description: 'The URL of the npm registry to use for installing packages. Defaults to the official npm registry.'
     default: 'https://registry.npmjs.org'
     required: false
 

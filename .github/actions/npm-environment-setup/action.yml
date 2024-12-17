@@ -3,15 +3,15 @@ description: 'Setup node and install dependencies'
 
 inputs:
   dependencies_type:
-    description: 'Dependencies type to install. Can be "production" or "development"'
+    description: 'Specifies the type of dependencies to install. Choose "production" to install only production dependencies, or "development" to include development dependencies as well.'
     default: 'production'
     required: false
   node_version:
-    description: 'Node version to setup'
+    description: 'The version of Node.js to set up in the environment. This ensures compatibility with your project requirements.'
     default: '22.12'
     required: false
   registry_url:
-    description: 'Registry url to use'
+    description: 'The URL of the npm registry to use for installing packages. Defaults to the official npm registry.'
     default: 'https://registry.npmjs.org'
     required: false
 
