@@ -38,13 +38,11 @@ runs:
         aws-region: ${{ inputs.aws_region }}
         mask-aws-account-id: true
 
-    - name: Set endpoint URL
-      if: inputs.endpoint_url != ''
-      shell: bash
-      run: |
-        aws configure set endpoint_url ${{ inputs.endpoint_url }}
-
     - name: Deploy to S3
       shell: bash
       run: |
-        s3cmd sync ${{ inputs.path_to_upload }} s3://${{ inputs.s3_bucket }}/${{ inputs.target_path }} --delete
+        endpoint_option=""
+        if [ -n "${{ inputs.endpoint_url }}" ]; then
+          endpoint_option="--endpoint-url ${{ inputs.endpoint_url }}"
+        fi
+        s3cmd sync ${{ inputs.path_to_upload }} s3://${{ inputs.s3_bucket }}/${{ inputs.target_path }} --delete $endpoint_option
