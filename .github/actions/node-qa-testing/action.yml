@@ -24,9 +24,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Restore cached dependencies
-      uses: ./.github/actions/restore-dependency-cache
-
     - name: Check formatting
       if: inputs.format_script != ''
       shell: bash
