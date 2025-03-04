@@ -19,11 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/npm-environment-setup@main
+      - uses: Beuterei/reusable-workflows/.github/actions/npm-environment-setup@main
         if: inputs.package_manager == 'npm'
         with:
           dependencies_type: development
-      - uses: ./.github/actions/bun-environment-setup@main
+      - uses: Beuterei/reusable-workflows/.github/actions/bun-environment-setup@main
         if: inputs.package_manager == 'bun'
         with:
           dependencies_type: development
@@ -33,8 +33,8 @@ jobs:
     needs: setup
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/restore-dependency-cache@main
-      - uses: ./.github/actions/build@main
+      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache@main
+      - uses: Beuterei/reusable-workflows/.github/actions/build@main
         with:
           package_manager: ${{ inputs.package_manager }}
           build_path: ${{ inputs.build_path }}
@@ -44,9 +44,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/restore-dependency-cache@main
+      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache@main
       - name: Lint
-        uses: ./.github/actions/eslint-runner@main
+        uses: Beuterei/reusable-workflows/.github/actions/eslint-runner@main
         with:
           package_manager: ${{ inputs.package_manager }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -56,6 +56,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/restore-dependency-cache@main
+      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache@main
       - name: Test
-        uses: ./.github/actions/jest-test-runner@main
+        uses: Beuterei/reusable-workflows/.github/actions/jest-test-runner@main

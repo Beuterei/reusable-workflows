@@ -28,11 +28,11 @@ jobs:
       url: ${{ steps.package-version-url.outputs.packageVersionUrl }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/npm-environment-setup
+      - uses: Beuterei/reusable-workflows/.github/actions/npm-environment-setup
         if: inputs.package_manager == 'npm'
         with:
           node_version: ${{ inputs.node_version }}
-      - uses: ./.github/actions/bun-environment-setup
+      - uses: Beuterei/reusable-workflows/.github/actions/bun-environment-setup
         if: inputs.package_manager == 'bun'
         with:
           bun_version: ${{ inputs.node_version }}
