@@ -27,6 +27,12 @@ jobs:
         if: inputs.package_manager == 'bun'
         with:
           registry-url: https://npm.pkg.github.com
+      - name: Configure npm authentication
+        run: |
+          echo "registry=https://npm.pkg.github.com" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Check if ${{ inputs.dist_tag }} tag exists (npm)
         id: check-tag-exists-npm
         if: inputs.package_manager == 'npm'
