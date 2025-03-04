@@ -32,9 +32,14 @@ jobs:
         if: inputs.package_manager == 'bun'
         with:
           dependencies_type: development
-      - name: Update version to include commit hash
+      - name: Update version to include commit hash (npm)
+        if: inputs.package_manager == 'npm'
         run: npm version "$(npm pkg get version | sed 's/\"//g')"-"$(date +%s)".${{ github.sha }} --allow-same-version --git-tag-version=false --tag-version-prefix=''
-      - name: Publish to ${{ inputs.dist_tag }} tag with npm registry
-        run: npm publish --tag ${{ inputs.dist_tag }} --registry=https://npm.pkg.github.com
+      - name: Update version to include commit hash (bun)
+        if: inputs.package_manager == 'bun'
+        run: bunx npm version "$(bunx npm pkg get version | sed 's/\"//g')"-"$(date +%s)".${{ github.sha }} --allow-same-version --git-tag-version=false --tag-version-prefix=''
+      - name: Publish to ${{ inputs.dist_tag }} tag with github registry
+        if: inputs.package_manager == 'npm'
+        run: ${{ inputs.package_manager }} publish --tag ${{ inputs.dist_tag }} --registry=https://npm.pkg.github.com
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

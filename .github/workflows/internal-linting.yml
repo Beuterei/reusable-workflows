@@ -2,6 +2,7 @@ on:
   pull_request:
     branches:
       - main
+  # eslint-disable-next-line yml/no-empty-mapping-value
   push:
 
 jobs:

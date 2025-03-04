@@ -1,0 +1,61 @@
+# eslint-disable unicorn/prevent-abbreviations
+on:
+  workflow_call:
+    inputs:
+      dist_tag:
+        description: NPM dist tag to remove
+        required: true
+        type: string
+      package_manager:
+        default: npm
+        description: Package manager to use. Can be 'npm' or 'bun'
+        type: string
+
+jobs:
+  remove:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        if: inputs.package_manager == 'npm'
+        with:
+          registry-url: https://npm.pkg.github.com
+          cache: npm
+      - uses: oven-sh/setup-bun@v2
+        if: inputs.package_manager == 'bun'
+        with:
+          registry-url: https://npm.pkg.github.com
+      - name: Check if ${{ inputs.dist_tag }} tag exists (npm)
+        id: check-tag-exists-npm
+        if: inputs.package_manager == 'npm'
+        run: |
+          if npm view "$(npm pkg get name | sed 's/\"//g')" dist-tags | grep -q "\"${{ inputs.dist_tag }}\":";
+          then
+            echo "tag_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "The dist-tag '${{ inputs.dist_tag }}' does not exist. Skipping removal...";
+            echo "tag_exists=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Check if ${{ inputs.dist_tag }} tag exists (bun)
+        id: check-tag-exists-bun
+        if: inputs.package_manager == 'bun'
+        run: |
+          if bunx npm view "$(bunx npm pkg get name | sed 's/\"//g')" dist-tags | grep -q "\"${{ inputs.dist_tag }}\":";
+          then
+            echo "tag_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "The dist-tag '${{ inputs.dist_tag }}' does not exist. Skipping removal...";
+            echo "tag_exists=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Removing ${{ inputs.dist_tag }} tag (npm)
+        if: inputs.package_manager == 'npm' && steps.check-tag-exists-npm.outputs.tag_exists == 'true'
+        run: npm dist-tag rm "$(npm pkg get name | sed 's/\"//g')" ${{ inputs.dist_tag }} --registry=https://npm.pkg.github.com
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Removing ${{ inputs.dist_tag }} tag (bun)
+        if: inputs.package_manager == 'bun' && steps.check-tag-exists-bun.outputs.tag_exists == 'true'
+        run: bunx npm dist-tag rm "$(bunx npm pkg get name | sed 's/\"//g')" ${{ inputs.dist_tag }} --registry=https://npm.pkg.github.com
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
