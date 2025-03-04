@@ -10,6 +10,10 @@ on:
         default: npm
         description: Package manager to use. Can be 'npm' or 'bun'
         type: string
+      package_scope:
+        default: '@beuluis'
+        description: Package scope to use.
+        type: string
 
 jobs:
   remove:
@@ -29,7 +33,7 @@ jobs:
           registry-url: https://npm.pkg.github.com
       - name: Configure npm authentication
         run: |
-          echo "@${GITHUB_REPOSITORY_OWNER}:registry=https://npm.pkg.github.com" > .npmrc
+          echo "@${{ inputs.package_scope }}:registry=https://npm.pkg.github.com" > .npmrc
           echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
