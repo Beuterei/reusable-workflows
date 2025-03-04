@@ -24,11 +24,11 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-      - uses: Beuterei/reusable-workflows/.github/actions/npm-environment-setup
+      - uses: Beuterei/reusable-workflows/.github/actions/npm-environment-setup@main
         if: inputs.package_manager == 'npm'
         with:
           dependencies_type: development
-      - uses: Beuterei/reusable-workflows/.github/actions/bun-environment-setup
+      - uses: Beuterei/reusable-workflows/.github/actions/bun-environment-setup@main
         if: inputs.package_manager == 'bun'
         with:
           dependencies_type: development

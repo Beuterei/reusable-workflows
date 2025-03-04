@@ -41,11 +41,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
-      - uses: Beuterei/reusable-workflows/.github/actions/npm-environment-setup
+      - uses: Beuterei/reusable-workflows/.github/actions/npm-environment-setup@main
         if: inputs.package_manager == 'npm'
         with:
           dependencies_type: development
-      - uses: Beuterei/reusable-workflows/.github/actions/bun-environment-setup
+      - uses: Beuterei/reusable-workflows/.github/actions/bun-environment-setup@main
         if: inputs.package_manager == 'bun'
         with:
           dependencies_type: development
@@ -57,7 +57,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
-      - uses: Beuterei/reusable-workflows/.github/actions/build
+      - uses: Beuterei/reusable-workflows/.github/actions/build@main
         with:
           package_manager: ${{ inputs.package_manager }}
           build_path: ${{ inputs.build_path }}
@@ -69,9 +69,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
-      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache
+      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache@main
       - name: Lint
-        uses: Beuterei/reusable-workflows/.github/actions/eslint-runner
+        uses: Beuterei/reusable-workflows/.github/actions/eslint-runner@main
         with:
           package_manager: ${{ inputs.package_manager }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -83,9 +83,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
-      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache
+      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache@main
       - name: Test
-        uses: Beuterei/reusable-workflows/.github/actions/jest-test-runner
+        uses: Beuterei/reusable-workflows/.github/actions/jest-test-runner@main
 
   deploy:
     runs-on: ubuntu-latest
@@ -94,11 +94,11 @@ jobs:
       - linting
       - testing
     steps:
-      - uses: Beuterei/reusable-workflows/.github/actions/restore-build-cache
+      - uses: Beuterei/reusable-workflows/.github/actions/restore-build-cache@main
         with:
           build_path: ${{ inputs.build_path }}
       - name: Deploy
-        uses: Beuterei/reusable-workflows/.github/actions/upload-to-s3
+        uses: Beuterei/reusable-workflows/.github/actions/upload-to-s3@main
         with:
           access_key: ${{ secrets.ACCESS_KEY }}
           secret_key: ${{ secrets.SECRET_KEY }}
