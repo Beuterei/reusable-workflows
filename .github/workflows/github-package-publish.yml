@@ -16,15 +16,22 @@ on:
         type: string
 
 # TODO: Check and support all downstream inputs
+# TODO: Eslint report fix
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       packages: write
     steps:
       - uses: actions/checkout@v4
+      - name: Configure npm authentication
+        if: inputs.package_manager == 'npm'
+        run: |
+          echo "registry=https://npm.pkg.github.com" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: Beuterei/reusable-workflows/.github/actions/npm-environment-setup@main
         if: inputs.package_manager == 'npm'
         with:
@@ -41,6 +48,6 @@ jobs:
         run: bunx npm version "$(bunx npm pkg get version | sed 's/\"//g')"-"$(date +%s)".${{ github.sha }} --allow-same-version --git-tag-version=false --tag-version-prefix=''
       - name: Publish to ${{ inputs.dist_tag }} tag with github registry
         if: inputs.package_manager == 'npm'
-        run: ${{ inputs.package_manager }} publish --tag ${{ inputs.dist_tag }} --registry=https://npm.pkg.github.com
+        run: ${{ inputs.package_manager }} publish --tag ${{ inputs.dist_tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
