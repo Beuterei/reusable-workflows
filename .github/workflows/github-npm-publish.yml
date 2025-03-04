@@ -15,17 +15,23 @@ on:
         description: Package manager to use. Can be 'npm' or 'bun'
         type: string
 
+# TODO: Check and support all downstream inputs
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
       packages: write
     steps:
-      - uses: ./.github/actions/npm-environment-setup
+      - uses: actions/checkout@v4
+      - uses: Beuterei/reusable-workflows/.github/actions/npm-environment-setup
+        if: inputs.package_manager == 'npm'
         with:
-          package_manager: ${{ inputs.package_manager }}
-          node_version: ${{ inputs.node_version }}
-          registry_url: https://npm.pkg.github.com
+          dependencies_type: development
+      - uses: Beuterei/reusable-workflows/.github/actions/bun-environment-setup
+        if: inputs.package_manager == 'bun'
+        with:
+          dependencies_type: development
       - name: Update version to include commit hash
         run: npm version "$(npm pkg get version | sed 's/\"//g')"-"$(date +%s)".${{ github.sha }} --allow-same-version --git-tag-version=false --tag-version-prefix=''
       - name: Publish to ${{ inputs.dist_tag }} tag with npm registry
