@@ -27,10 +27,15 @@ jobs:
       name: ${{ inputs.dist_tag }}
       url: ${{ steps.package-version-url.outputs.packageVersionUrl }}
     steps:
-      - uses: ./.github/actions/node-environment-setup
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/npm-environment-setup
+        if: inputs.package_manager == 'npm'
         with:
-          package_manager: ${{ inputs.package_manager }}
           node_version: ${{ inputs.node_version }}
+      - uses: ./.github/actions/bun-environment-setup
+        if: inputs.package_manager == 'bun'
+        with:
+          bun_version: ${{ inputs.node_version }}
       - name: Update version for non latest tagged versions
         if: inputs.dist_tag != 'latest'
         run: npm version "$(npm pkg get version | sed 's/\"//g')"-"$(date +%s)".${{ github.sha }} --allow-same-version --git-tag-version=false --tag-version-prefix=''

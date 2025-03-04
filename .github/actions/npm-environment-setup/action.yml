@@ -22,7 +22,7 @@ runs:
       with:
         registry-url: ${{ inputs.registry_url }}
         node-version: ${{ inputs.node_version }}
-        cache: ${{ inputs.package_manager == 'npm' && 'npm' || '' }}
+        cache: 'npm'
 
     - name: Restore cached dependencies
       uses: actions/cache/restore@v4
