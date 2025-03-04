@@ -1,6 +1,8 @@
 name: "ESLint Runner"
 description: "Runs ESLint on the codebase"
 
+# TODO: Eslint report fix
+
 inputs:
   package_manager:
     description: 'The package manager to use for running scripts. Options are "npm" or "bun".'

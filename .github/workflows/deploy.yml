@@ -19,6 +19,7 @@ on:
         description: Environment file string to be used during deployment
         required: true
 
+# TODO: Check and support all downstream inputs
 jobs:
   deploy:
     runs-on: ubuntu-latest
