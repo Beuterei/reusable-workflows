@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Configure npm authentication
         run: |
-          echo "registry=https://npm.pkg.github.com" > .npmrc
+          echo "@${GITHUB_REPOSITORY_OWNER}:registry=https://npm.pkg.github.com" > .npmrc
           echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -46,7 +46,6 @@ jobs:
         if: inputs.package_manager == 'bun'
         run: bunx npm version "$(bunx npm pkg get version | sed 's/\"//g')"-"$(date +%s)".${{ github.sha }} --allow-same-version --git-tag-version=false --tag-version-prefix=''
       - name: Publishing to https://npm.pkg.github.com with tag ${{ inputs.dist_tag }}
-        if: inputs.package_manager == 'npm'
         run: ${{ inputs.package_manager }} publish --tag ${{ inputs.dist_tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
