@@ -8,7 +8,7 @@ inputs:
     required: false
   node_version:
     description: "The version of Node.js to set up in the environment. This ensures compatibility with your project requirements."
-    default: "22.12"
+    default: "22"
     required: false
   registry_url:
     description: "The URL of the npm registry to use for installing packages. Defaults to the official npm registry."
@@ -29,16 +29,16 @@ runs:
       id: restore-dependencies-cache
       with:
         path: node_modules
-        key: dependencies-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+        key: dependencies-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-1
 
     - name: Install npm dependencies
       if: steps.restore-dependencies-cache.outputs.cache-hit != 'true'
       shell: bash
       run: npm ci ${{ inputs.dependencies_type == 'production' && '--omit=dev' || '' }}
-
     - name: Cache dependencies
       uses: actions/cache/save@v4
       if: steps.restore-dependencies-cache.outputs.cache-hit != 'true'
       with:
         path: node_modules
-        key: dependencies-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+        key: dependencies-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-1
+

@@ -8,4 +8,4 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: node_modules
-        key: dependencies-${{ runner.os }}-${{ hashFiles('**/bun.lockb') || hashFiles('**/package-lock.json') }}
+        key: dependencies-${{ runner.os }}-${{ hashFiles('**/bun.lockb') || hashFiles('**/package-lock.json') }}-1

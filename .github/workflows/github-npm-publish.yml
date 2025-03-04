@@ -7,7 +7,7 @@ on:
         type: string
       node_version:
         description: Node version to build on
-        default: "18"
+        default: "22"
         required: false
         type: string
       package_manager:
