@@ -18,12 +18,12 @@ runs:
     - name: Run tests (bun)
       if: inputs.package_manager == 'bun'
       shell: bash
-      run: bunx eslint . --output-file eslint_report.json --format json
+      run: bunx eslint . --cache --output-file eslint_report.json --format json
 
     - name: Run tests (npm)
       if: inputs.package_manager == 'npm'
       shell: bash
-      run: npx eslint . --output-file eslint_report.json --format json
+      run: npx eslint . --cache --output-file eslint_report.json --format json
 
     - name: Annotate Code Linting Results
       if: always()
