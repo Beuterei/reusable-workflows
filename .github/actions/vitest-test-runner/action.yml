@@ -1,0 +1,22 @@
+name: "Vitest Test Runner"
+description: "Runs Vitest tests, with coverage reporting"
+
+# TODO: Add junit reporting
+inputs:
+  package_manager:
+    description: 'The package manager to use for running scripts. Options are "npm" or "bun".'
+    default: "npm"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run tests (bun)
+      if: inputs.package_manager == 'bun'
+      shell: bash
+      run: bunx vitest run --coverage
+
+    - name: Run tests (npm)
+      if: inputs.package_manager == 'npm'
+      shell: bash
+      run: npx vitest run --coverage
