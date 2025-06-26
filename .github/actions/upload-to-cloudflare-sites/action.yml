@@ -1,0 +1,27 @@
+name: "Upload to Cloudflare Sites"
+description: "Uploads files to Cloudflare Pages"
+
+inputs:
+  api_token:
+    description: "Cloudflare API token for authentication."
+    required: true
+  account_id:
+    description: "Cloudflare account ID."
+    required: true
+  project_name:
+    description: "Name of the Cloudflare Pages project."
+    required: true
+  source_path:
+    description: "Local path to the dist folder to upload."
+    required: true
+    default: "dist"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Deploy to Cloudflare Pages
+      uses: cloudflare/wrangler-action@v3
+      with:
+        apiToken: ${{ inputs.api_token }}
+        accountId: ${{ inputs.account_id }}
+        command: pages deploy ${{ inputs.source_path }} --project-name=${{ inputs.project_name }} --production

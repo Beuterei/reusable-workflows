@@ -13,26 +13,22 @@ on:
         default: "dist/"
         type: string
         required: false
-      bucket_name:
+      project_name:
         required: true
         type: string
-        description: "Name of the S3 bucket where files will be uploaded."
-      endpoint:
-        required: false
-        type: string
-        description: "Custom endpoint for S3-compatible storage. Use this if you are not using AWS S3, but a compatible service."
+        description: "Name of the Cloudflare Pages project."
       ref:
         required: false
         type: string
         description: "The branch or tag to deploy. Defaults to the current branch."
         default: ${{ github.ref }}
     secrets:
-      ACCESS_KEY:
+      CLOUDFLARE_API_TOKEN:
         required: true
-        description: "AWS access key for authentication."
-      SECRET_KEY:
+        description: "Cloudflare API token for authentication."
+      CLOUDFLARE_ACCOUNT_ID:
         required: true
-        description: "AWS secret key for authentication."
+        description: "Cloudflare account ID."
 
 jobs:
   setup:
@@ -98,10 +94,9 @@ jobs:
         with:
           build_path: ${{ inputs.build_path }}
       - name: Deploy
-        uses: Beuterei/reusable-workflows/.github/actions/upload-to-s3@main
+        uses: Beuterei/reusable-workflows/.github/actions/upload-to-cloudflare-sites@main
         with:
-          access_key: ${{ secrets.ACCESS_KEY }}
-          secret_key: ${{ secrets.SECRET_KEY }}
-          bucket_name: ${{ inputs.bucket_name }}
-          endpoint: ${{ inputs.endpoint }}
+          api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          project_name: ${{ inputs.project_name }}
           source_path: ${{ inputs.build_path }}
