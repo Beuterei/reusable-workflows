@@ -94,7 +94,7 @@ jobs:
         with:
           build_path: ${{ inputs.build_path }}
       - name: Deploy
-        uses: Beuterei/reusable-workflows/.github/actions/upload-to-cloudflare-sites@main
+        uses: Beuterei/reusable-workflows/.github/actions/upload-to-cloudflare-pages@main
         with:
           api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
