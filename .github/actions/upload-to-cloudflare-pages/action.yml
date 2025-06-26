@@ -13,8 +13,11 @@ inputs:
     required: true
   source_path:
     description: "Local path to the dist folder to upload."
-    required: true
+    required: false
     default: "dist"
+  ref:
+    description: "The name of the branch to deploy."
+    required: true
 
 runs:
   using: "composite"
@@ -24,4 +27,5 @@ runs:
       with:
         apiToken: ${{ inputs.api_token }}
         accountId: ${{ inputs.account_id }}
-        command: pages deploy ${{ inputs.source_path }} --project-name=${{ inputs.project_name }} --branch main --commit-hash ${{ github.sha }}
+        # TODO: --commit-hash ${{ inputs.sha }}
+        command: pages deploy ${{ inputs.source_path }} --project-name=${{ inputs.project_name }} --branch ${{ inputs.ref }}

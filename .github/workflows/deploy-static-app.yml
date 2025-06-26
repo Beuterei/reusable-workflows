@@ -72,3 +72,4 @@ jobs:
           account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           project_name: ${{ inputs.project_name }}
           source_path: ${{ inputs.build_path }}
+          ref: ${{ inputs.ref }}
