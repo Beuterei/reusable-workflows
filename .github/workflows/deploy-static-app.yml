@@ -21,7 +21,7 @@ on:
         required: false
         type: string
         description: "The branch or tag to deploy. Defaults to the current branch."
-        default: ${{ github.ref }}
+        default: ${{ github.ref_name }}
     secrets:
       CLOUDFLARE_API_TOKEN:
         required: true
