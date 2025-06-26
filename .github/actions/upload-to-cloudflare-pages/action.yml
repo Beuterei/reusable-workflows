@@ -24,4 +24,4 @@ runs:
       with:
         apiToken: ${{ inputs.api_token }}
         accountId: ${{ inputs.account_id }}
-        command: pages deploy ${{ inputs.source_path }} --project-name=${{ inputs.project_name }} --production
+        command: pages deploy ${{ inputs.source_path }} --project-name=${{ inputs.project_name }} --branch main
