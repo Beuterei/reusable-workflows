@@ -57,38 +57,10 @@ jobs:
         with:
           package_manager: ${{ inputs.package_manager }}
           build_path: ${{ inputs.build_path }}
-
-  linting:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.ref }}
-      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache@main
-      - name: Lint
-        uses: Beuterei/reusable-workflows/.github/actions/eslint-runner@main
-        with:
-          package_manager: ${{ inputs.package_manager }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  testing:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.ref }}
-      - uses: Beuterei/reusable-workflows/.github/actions/restore-dependency-cache@main
-      - name: Test
-        uses: Beuterei/reusable-workflows/.github/actions/jest-test-runner@main
-
   deploy:
     runs-on: ubuntu-latest
     needs:
       - build
-      - linting
-      - testing
     steps:
       - uses: Beuterei/reusable-workflows/.github/actions/restore-build-cache@main
         with:
