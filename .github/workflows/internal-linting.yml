@@ -21,4 +21,4 @@ jobs:
       - name: Run linting
         uses: Beuterei/reusable-workflows/.github/actions/eslint-runner@main
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}

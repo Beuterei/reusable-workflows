@@ -3,7 +3,7 @@ description: Restore build cache
 
 inputs:
   build_path:
-    description: "The path to the build script."
+    description: "The path to the build."
     default: "dist/"
     required: false
 

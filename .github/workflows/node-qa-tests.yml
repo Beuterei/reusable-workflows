@@ -9,7 +9,7 @@ on:
         type: string
         required: false
       build_path:
-        description: "The path to the build script."
+        description: "The path to the build."
         default: "dist/"
         type: string
         required: false
@@ -54,7 +54,7 @@ jobs:
         uses: Beuterei/reusable-workflows/.github/actions/eslint-runner@main
         with:
           package_manager: ${{ inputs.package_manager }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   testing:
     needs: setup

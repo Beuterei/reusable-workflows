@@ -40,4 +40,4 @@ runs:
       if: steps.restore-dependencies-cache.outputs.cache-hit != 'true'
       with:
         path: node_modules
-        key: dependencies-${{ runner.os }}-${{ hashFiles('package-lock.json', 'bun.lockb') }}
+        key: dependencies-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/bun.lockb') }}

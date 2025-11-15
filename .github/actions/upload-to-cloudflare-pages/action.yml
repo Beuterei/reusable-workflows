@@ -15,6 +15,7 @@ inputs:
     description: "Local path to the dist folder to upload."
     required: false
     default: "dist"
+  # TODO: rework this to support envs and not "branches" so aliases can be used
   ref:
     description: "The name of the branch to deploy."
     required: true

@@ -29,7 +29,7 @@ runs:
       id: restore-dependencies-cache
       with:
         path: node_modules
-        key: dependencies-${{ runner.os }}-${{ hashFiles('package-lock.json', 'bun.lockb') }}-2
+        key: dependencies- ${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/bun.lockb') }}
 
     - name: Install npm dependencies
       if: steps.restore-dependencies-cache.outputs.cache-hit != 'true'
@@ -40,4 +40,4 @@ runs:
       if: steps.restore-dependencies-cache.outputs.cache-hit != 'true'
       with:
         path: node_modules
-        key: dependencies-${{ runner.os }}-${{ hashFiles('package-lock.json', 'bun.lockb') }}-2
+        key: dependencies-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/bun.lockb') }}

@@ -7,7 +7,7 @@ inputs:
     default: "npm"
     required: false
   build_path:
-    description: "The path to the build script."
+    description: "The path to the build."
     default: "dist/"
     required: false
 

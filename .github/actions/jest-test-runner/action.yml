@@ -1,11 +1,13 @@
 name: "Jest Test Runner"
 description: "Runs Jest tests, with coverage reporting"
 
-# TODO: Add junit reporting
 inputs:
   package_manager:
     description: 'The package manager to use for running scripts. Options are "npm" or "bun".'
     default: "npm"
+    required: false
+  github_token:
+    description: "The GitHub token to use for reporting test results."
     required: false
 
 runs:
@@ -14,9 +16,24 @@ runs:
     - name: Run tests (bun)
       if: inputs.package_manager == 'bun'
       shell: bash
-      run: bunx jest --ci --coverage
+      run: bunx jest --ci --coverage --reporters=default --reporters=jest-junit --reporters=json-summary
 
     - name: Run tests (npm)
       if: inputs.package_manager == 'npm'
       shell: bash
-      run: npx jest --ci --coverage
+      run: npx jest --ci --coverage --reporters=default --reporters=jest-junit --reporters=json-summary
+
+    - name: Transform JUnit Report
+      if: always()
+      uses: MeilCli/common-lint-reporter/transformer/junit@v1
+      with:
+        report_files: "junit.xml"
+        github_token: ${{ inputs.github_token }}
+
+    - name: Report Test Results
+      if: always()
+      uses: MeilCli/common-lint-reporter@v1
+      with:
+        report_type: "check_run"
+        report_to_same_check_run: "true"
+        github_token: ${{ inputs.github_token }}
